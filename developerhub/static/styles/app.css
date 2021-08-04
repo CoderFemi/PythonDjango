@@ -510,9 +510,10 @@ img {
 /*========== Projects ==========*/
 
 .project__thumbnail {
-  height: 25rem;
-  object-fit: cover;
-  object-position: top center;
+  height: 40vh;
+  width: 100%;
+  object-fit: contain;
+  /* object-position: top center; */
 }
 
 .project__title {

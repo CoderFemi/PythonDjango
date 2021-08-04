@@ -3,8 +3,8 @@
 <!-- Header Section -->
 <header class="header">
     <div class="container container--narrow">
-        <a href="{% url 'projects' %}" class="header__logo">
-            <h1>developerHub</h1>
+        <a href="{% url 'profiles' %}" class="header__logo">
+            <h3>developerHub</h3>
             <!-- <img src="images/logo.svg" alt="DevSearch Logo" /> -->
         </a>
         <nav class="header__nav">
@@ -14,7 +14,7 @@
                 <div class="toggle-menu__lines"></div>
             </label>
             <ul class="header__menu">
-                <li class="header__menuItem"><a href="">Developers</a></li>
+                <li class="header__menuItem"><a href="{% url 'profiles' %}">Developers</a></li>
                 <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
                 <li class="header__menuItem"><a href="">Inbox</a></li>
                 <li class="header__menuItem"><a href="{% url 'create_project' %}" class="btn btn--sub">Add Project</a></li>
