@@ -19,14 +19,16 @@
     <title>Developer Hub</title>
 </head>
 
-<header>
-    {% include 'navbar.html' %}
-</header>
-
 <body>
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    
+    {% include 'messages.html' %}
     {% block content %}
 
     {% endblock content %}
 </body>
+<script src="{% static 'uikit/app.js' %}"></script>
 
 </html>
