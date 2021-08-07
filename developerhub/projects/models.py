@@ -17,6 +17,9 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+    class Meta:
+        ordering = ['-createdAt']
 
 
 class Review(models.Model):
