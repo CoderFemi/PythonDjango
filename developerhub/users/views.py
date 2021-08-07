@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import Profile, Skill
+from .models import Profile, Skill, Message
 from .forms import RegisterForm, ProfileForm, SkillForm
 from .utils import paginate_profiles, search_profiles
 
@@ -39,7 +39,7 @@ def login_user(request):
         return redirect('profiles')
 
     if request.method == 'POST':
-        username = request.POST['username']
+        username = request.POST['username'].lower()
         password = request.POST['password']
 
         try:
@@ -51,7 +51,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, f'Welcome, {username}!')
-            return redirect('profiles')
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         else:
             messages.error(request, 'Invalid credentials.')
 
@@ -155,3 +155,20 @@ def delete_skill(request, param):
         
     context = {'object': skill}
     return render(request, 'delete_template.html', context)
+
+
+@login_required(login_url='login')
+def inbox(request):
+    profile = request.user.profile
+    message_requests = profile.messages.all()
+    unread_count = message_requests.filter(is_read=False).count()
+    context = {'message_requests': message_requests, 'unread_count': unread_count}
+    return render(request, 'users/inbox.html', context)
+
+
+@login_required(login_url='login')
+def view_message(request, param):
+    profile = request.user.profile
+    message = profile.messages.get(id=param)
+    context = {'message': message}
+    return render(request, 'users/message.html', context)
