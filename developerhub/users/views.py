@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import Profile, Skill, Message
-from .forms import RegisterForm, ProfileForm, SkillForm
+from .forms import RegisterForm, ProfileForm, SkillForm, MessageForm
 from .utils import paginate_profiles, search_profiles
 
 
@@ -170,5 +170,38 @@ def inbox(request):
 def view_message(request, param):
     profile = request.user.profile
     message = profile.messages.get(id=param)
+
+    if message.is_read == False:
+        message.is_read = True
+        message.save()
+        
     context = {'message': message}
     return render(request, 'users/message.html', context)
+
+
+def compose_message(request, param):
+    recipient = Profile.objects.get(id=param)
+    form = MessageForm()
+
+    try:
+        sender = request.user.profile
+    except:
+        sender = None
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid:
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+
+            if sender:
+                message.name = sender.name
+                message.email = sender.email
+
+            message.save()
+            messages.success(request, 'Message sent!')
+            return redirect('show_profile', param=recipient.id)
+
+    context = {'form': form, 'recipient': recipient}
+    return render(request, 'users/message_form.html', context)

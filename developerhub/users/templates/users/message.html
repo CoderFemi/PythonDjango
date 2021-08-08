@@ -13,10 +13,10 @@
         {% else %}
         <p class="message__author">{{message.name}}</p>
         {% endif %}
-        <p class="message__date">{{message.created}}</p>
+        <p class="message__date">{{message.createdAt}}</p>
         <div class="message__body">{{message.body|linebreaksbr}}</div>
     </div>
   </div>
 </main>
 
-{% endblock content %}
+{% endblock %}
